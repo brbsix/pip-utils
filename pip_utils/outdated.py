@@ -228,10 +228,6 @@ class ListCommand(object):
             self.find_packages_latest_versions(self.options),
             key=lambda p: p[0].project_name.lower())
 
-        # # configure logging
-        # logging.basicConfig(format='%(message)s',
-        #                     level=logging.INFO)
-
         for dist, latest_version, typ in latest_versions:
             if latest_version > dist.parsed_version:
                 if options.all:

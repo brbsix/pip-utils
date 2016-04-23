@@ -156,7 +156,6 @@ class ListCommand(object):
                 editables_only=options.get('editable'),
             )
             for dist in installed_packages:
-                typ = 'unknown'
                 all_candidates = finder.find_all_candidates(dist.key)
                 if not options.get('pre'):
                     # Remove prereleases

@@ -133,10 +133,8 @@ class ListCommand(object):
     @classmethod
     def find_packages_latest_versions(cls, options):
         """Yield latest versions."""
-        index_urls = [options.get('index_url')] + \
-                     options.get('extra_index_urls')
-        if options.get('no_index'):
-            index_urls = []
+        index_urls = [] if options.get('no_index') else \
+            [options.get('index_url')] + options.get('extra_index_urls')
 
         dependency_links = []
         for dist in get_installed_distributions(
@@ -171,10 +169,7 @@ class ListCommand(object):
                 best_candidate = max(all_candidates,
                                      key=finder._candidate_sort_key)
                 remote_version = best_candidate.version
-                if best_candidate.location.is_wheel:
-                    typ = 'wheel'
-                else:
-                    typ = 'sdist'
+                typ = 'wheel' if best_candidate.location.is_wheel else 'sdist'
                 yield dist, remote_version, typ
 
     @classmethod

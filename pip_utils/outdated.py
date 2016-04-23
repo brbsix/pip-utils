@@ -130,14 +130,6 @@ class ListCommand(object):
 
         return True
 
-    @staticmethod
-    def filtered(dist, latest_version):
-        """Filter unwanted updates."""
-        if dist.project_name == 'decorator' and dist.version == '4.0.7' \
-                and str(latest_version) == '4.0.8':
-            return True
-        return False
-
     @classmethod
     def find_packages_latest_versions(cls, options):
         """Yield latest versions."""
@@ -251,10 +243,9 @@ class ListCommand(object):
                     if not self.can_be_updated(dist, latest_version):
                         continue
 
-                if not self.filtered(dist, latest_version):
-                    print(dist.project_name if options.brief else
-                          '%s - Latest: %s [%s]' %
-                          (self.output_package(dist), latest_version, typ))
+                print(dist.project_name if options.brief else
+                      '%s - Latest: %s [%s]' %
+                      (self.output_package(dist), latest_version, typ))
 
 
 # pylint: disable=too-few-public-methods

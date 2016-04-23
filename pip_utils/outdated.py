@@ -276,9 +276,9 @@ class VersionPredicate(object):
             flags = re.ASCII  # Python 3 support
         except AttributeError:
             flags = 0
-        match = re.match(
-            r'(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)',
-            version_predicate, flags)
+        # use re.compile() for flags support in Python 2.6
+        pattern = re.compile(r'(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)', flags)
+        match = pattern.match(version_predicate)
         if not match:
             raise ValueError('bad package name in %r' % version_predicate)
 

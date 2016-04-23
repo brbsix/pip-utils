@@ -40,7 +40,7 @@ def _parser():
     parser_dependants = subparsers.add_parser(
         'dependants',
         add_help=False,
-        help='list dependant packages')
+        help='list dependants of package')
     parser_dependants.add_argument(
         'package',
         metavar='PACKAGE',
@@ -56,7 +56,7 @@ def _parser():
     parser_dependents = subparsers.add_parser(
         'dependents',
         add_help=False,
-        help='list dependent packages')
+        help='list dependents of package')
     parser_dependents.add_argument(
         'package',
         metavar='PACKAGE',

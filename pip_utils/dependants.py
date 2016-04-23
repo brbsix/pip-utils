@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""List dependant packages"""
+"""List dependants of package"""
 
 # Python 2 forwards-compatibility
 from __future__ import absolute_import, print_function

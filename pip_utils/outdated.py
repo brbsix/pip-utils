@@ -19,13 +19,12 @@ from pip.utils import (
 )
 
 
-class ListCommand:
+class ListCommand(object):
     """
     Modified version of pip's list command.
 
     Sourced from: pip.commands.list.ListCommand
     """
-
     installed_distributions = None
 
     options = {
@@ -250,7 +249,7 @@ class ListCommand:
                           (self.output_package(dist), latest_version, typ))
 
 
-class VersionPredicate:
+class VersionPredicate(object):
     """
     Parse and test package version predicates. Unlike the original,
     this uses LooseVersion instead of StrictVersion.

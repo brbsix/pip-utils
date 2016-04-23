@@ -33,9 +33,12 @@ def _parser():
     launcher = 'pip%s-utils' % sys.version_info.major
 
     parser = argparse.ArgumentParser(
-        add_help=False,
         description='%s.' % __description__,
         prog=launcher)
+    parser.add_argument(
+        '--version',
+        action='version',
+        version='%(prog)s ' + __version__)
 
     subparsers = parser.add_subparsers()
 
@@ -131,17 +134,6 @@ def _parser():
         help=argparse.SUPPRESS)
     parser_parents.set_defaults(
         func=command_parents)
-
-    pgroup = parser.add_argument_group('program options')
-    pgroup.add_argument(
-        '-h', '--help',
-        action='help',
-        help=argparse.SUPPRESS)
-    pgroup.add_argument(
-        '--version',
-        action='version',
-        help=argparse.SUPPRESS,
-        version='%(prog)s ' + __version__)
 
     return parser
 

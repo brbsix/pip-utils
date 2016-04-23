@@ -252,11 +252,10 @@ class ListCommand:
 
 class VersionPredicate:
     """
-    Parse and test package version predicates.
+    Parse and test package version predicates. Unlike the original,
+    this uses LooseVersion instead of StrictVersion.
 
     Sourced from: distutils.versionpredicate.VersionPredicate
-
-    Unlike the original, this uses LooseVersion instead of StrictVersion.
     """
 
     def __init__(self, versionPredicateStr):

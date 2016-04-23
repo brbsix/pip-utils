@@ -160,8 +160,8 @@ class ListCommand(object):
                 all_candidates = finder.find_all_candidates(dist.key)
                 if not options.get('pre'):
                     # Remove prereleases
-                    all_candidates = [candidate for candidate in all_candidates
-                                      if not candidate.version.is_prerelease]
+                    all_candidates = [c for c in all_candidates if not
+                                      c.version.is_prerelease]
 
                 if not all_candidates:
                     continue

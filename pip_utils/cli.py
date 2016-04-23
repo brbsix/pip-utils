@@ -34,6 +34,8 @@ def _parser():
 
     parser = argparse.ArgumentParser(
         description='%s.' % __description__,
+        epilog='See `%s COMMAND --help` for help '
+               'on a specific subcommand.' % launcher,
         prog=launcher)
     parser.add_argument(
         '--version',

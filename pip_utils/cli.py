@@ -6,6 +6,7 @@ from __future__ import absolute_import
 
 # standard imports
 import argparse
+import sys
 
 # external imports
 from pkg_resources import DistributionNotFound, get_distribution
@@ -29,10 +30,12 @@ def _distribution(value):
 
 def _parser():
     """Parse command-line options."""
+    launcher = 'pip%s-utils' % sys.version_info.major
 
     parser = argparse.ArgumentParser(
         add_help=False,
-        description='%s.' % __description__)
+        description='%s.' % __description__,
+        prog=launcher)
 
     subparsers = parser.add_subparsers()
 

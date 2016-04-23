@@ -64,7 +64,8 @@ class ListCommand(object):
         'verbose': 0
     }
 
-    def _build_package_finder(self, options, index_urls, session):
+    @staticmethod
+    def _build_package_finder(options, index_urls, session):
         """
         Create a package finder appropriate to this list command.
         """
@@ -77,7 +78,8 @@ class ListCommand(object):
             session=session,
         )
 
-    def _build_session(self, options, retries=None, timeout=None):
+    @staticmethod
+    def _build_session(options, retries=None, timeout=None):
         session = PipSession(
             cache=(
                 normalize_path(os.path.join(options.get('cache_dir'), 'http'))
@@ -113,28 +115,32 @@ class ListCommand(object):
 
         return session
 
-    def can_be_updated(self, dist, latest_version):
+    @classmethod
+    def can_be_updated(cls, dist, latest_version):
         """Determine whether package can be updated or not."""
 
         name = dist.project_name
-        dependants = self.get_dependants(name)
+        dependants = cls.get_dependants(name)
         for dependant in dependants:
             requires = dependant.requires()
-            for requirement in self.get_requirement(name, requires):
+            for requirement in cls.get_requirement(name, requires):
                 current = VersionPredicate(requirement)
                 if not current.satisfied_by(str(latest_version)):
                     return False
 
         return True
 
-    def filtered(self, dist, latest_version):
+    @staticmethod
+    def filtered(dist, latest_version):
         """Filter unwanted updates."""
         if dist.project_name == 'decorator' and dist.version == '4.0.7' \
                 and str(latest_version) == '4.0.8':
             return True
         return False
 
-    def find_packages_latest_versions(self, options):
+    @classmethod
+    def find_packages_latest_versions(cls, options):
+        """Yield latest versions."""
         index_urls = [options.get('index_url')] + \
                      options.get('extra_index_urls')
         if options.get('no_index'):
@@ -150,8 +156,8 @@ class ListCommand(object):
                     dist.get_metadata_lines('dependency_links.txt'),
                 )
 
-        with self._build_session(options) as session:
-            finder = self._build_package_finder(options, index_urls, session)
+        with cls._build_session(options) as session:
+            finder = cls._build_package_finder(options, index_urls, session)
             finder.add_dependency_links(dependency_links)
 
             installed_packages = get_installed_distributions(
@@ -169,6 +175,7 @@ class ListCommand(object):
 
                 if not all_candidates:
                     continue
+                # pylint: disable=protected-access
                 best_candidate = max(all_candidates,
                                      key=finder._candidate_sort_key)
                 remote_version = best_candidate.version
@@ -178,22 +185,24 @@ class ListCommand(object):
                     typ = 'sdist'
                 yield dist, remote_version, typ
 
-    def get_dependants(self, dist):
+    @classmethod
+    def get_dependants(cls, dist):
         """Yield dependant user packages for a given package name."""
 
         # cache installed user distributions for re-runs
-        if self.installed_distributions is None:
-            self.installed_distributions = pip.get_installed_distributions(
+        if cls.installed_distributions is None:
+            cls.installed_distributions = pip.get_installed_distributions(
                 user_only=True)
 
-        for package in self.installed_distributions:
+        for package in cls.installed_distributions:
             for requirement_package in package.requires():
                 requirement_name = requirement_package.project_name
                 # perform case-insensitive matching
                 if requirement_name.lower() == dist.lower():
                     yield package
 
-    def get_requirement(self, name, requires):
+    @staticmethod
+    def get_requirement(name, requires):
         """
         Yield matching requirement strings.
 
@@ -213,7 +222,9 @@ class ListCommand(object):
                 safe_name = require.project_name.replace('-', '_')
                 yield '%s (%s)' % (safe_name, require.specifier)
 
-    def output_package(self, dist):
+    @staticmethod
+    def output_package(dist):
+        """Return string displaying package information."""
         if dist_is_editable(dist):
             return '%s (%s, %s)' % (
                 dist.project_name,
@@ -224,6 +235,7 @@ class ListCommand(object):
             return '%s (%s)' % (dist.project_name, dist.version)
 
     def run_outdated(self, options):
+        """Print outdated user packages."""
         latest_versions = sorted(
             self.find_packages_latest_versions(self.options),
             key=lambda p: p[0].project_name.lower())
@@ -245,6 +257,7 @@ class ListCommand(object):
                           (self.output_package(dist), latest_version, typ))
 
 
+# pylint: disable=too-few-public-methods
 class VersionPredicate(object):
     """
     Parse and test package version predicates. Unlike the original,
@@ -253,56 +266,55 @@ class VersionPredicate(object):
     Sourced from: distutils.versionpredicate.VersionPredicate
     """
 
-    def __init__(self, versionPredicateStr):
+    def __init__(self, version_predicate):
         """Parse a version predicate string."""
+        version_predicate = version_predicate.strip()
+        if not version_predicate:
+            raise ValueError('empty package restriction')
+
         try:
             flags = re.ASCII  # Python 3 support
         except AttributeError:
             flags = 0
-
-        re_paren = re.compile(r'^\s*\((.*)\)\s*$')
-        re_validPackage = re.compile(
-            r'(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)', flags)
-
-        versionPredicateStr = versionPredicateStr.strip()
-        if not versionPredicateStr:
-            raise ValueError('empty package restriction')
-        match = re_validPackage.match(versionPredicateStr)
+        match = re.match(
+            r'(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)',
+            version_predicate, flags)
         if not match:
-            raise ValueError('bad package name in %r' % versionPredicateStr)
+            raise ValueError('bad package name in %r' % version_predicate)
+
         self.name, paren = match.groups()
         paren = paren.strip()
         if paren:
-            match = re_paren.match(paren)
+            match = re.match(r'^\s*\((.*)\)\s*$', paren)
             if not match:
                 raise ValueError('expected parenthesized list: %r' % paren)
-            str = match.groups()[0]
-            self.pred = [self._splitUp(aPred) for aPred in str.split(',')]
+            pred_str = match.groups()[0]
+            self.pred = [self._split(p) for p in pred_str.split(',')]
             if not self.pred:
                 raise ValueError('empty parenthesized list in %r'
-                                 % versionPredicateStr)
+                                 % version_predicate)
         else:
             self.pred = []
 
     def __str__(self):
         if self.pred:
-            seq = [cond + ' ' + str(ver) for cond, ver in self.pred]
-            return self.name + ' (' + ', '.join(seq) + ')'
+            seq = ('%s %s' % (c, v) for c, v in self.pred)
+            return '%s (%s)' % (self.name, ', '.join(seq))
         else:
             return self.name
 
-    def _splitUp(self, pred):
-        """Parse a single version comparison.
+    @staticmethod
+    def _split(pred):
+        """
+        Parse a single version comparison.
 
         Return (comparison string, LooseVersion)
         """
-        re_splitComparison = re.compile(
-            r'^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$')
-        res = re_splitComparison.match(pred)
+        res = re.match(r'^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$', pred)
         if not res:
             raise ValueError('bad package restriction syntax: %r' % pred)
-        comp, verStr = res.groups()
-        return (comp, LooseVersion(verStr))
+        comparison, version = res.groups()
+        return (comparison, LooseVersion(version))
 
     def satisfied_by(self, version):
         """

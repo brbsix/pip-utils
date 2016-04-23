@@ -81,7 +81,7 @@ class ListCommand:
     def _build_session(self, options, retries=None, timeout=None):
         session = PipSession(
             cache=(
-                normalize_path(os.path.join(options.get('cache_dir'), "http"))
+                normalize_path(os.path.join(options.get('cache_dir'), 'http'))
                 if options.get('cache_dir') else None
             ),
             retries=retries if retries is not None else options.get('retries'),
@@ -105,8 +105,8 @@ class ListCommand:
         # Handle configured proxies
         if options.get('proxy'):
             session.proxies = {
-                "http": options.get('proxy'),
-                "https": options.get('proxy'),
+                'http': options.get('proxy'),
+                'https': options.get('proxy'),
             }
 
         # Determine if we can prompt the user for authentication or not
@@ -266,34 +266,34 @@ class VersionPredicate:
         except AttributeError:
             flags = 0
 
-        re_paren = re.compile(r"^\s*\((.*)\)\s*$")
+        re_paren = re.compile(r'^\s*\((.*)\)\s*$')
         re_validPackage = re.compile(
-            r"(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)", flags)
+            r'(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)', flags)
 
         versionPredicateStr = versionPredicateStr.strip()
         if not versionPredicateStr:
-            raise ValueError("empty package restriction")
+            raise ValueError('empty package restriction')
         match = re_validPackage.match(versionPredicateStr)
         if not match:
-            raise ValueError("bad package name in %r" % versionPredicateStr)
+            raise ValueError('bad package name in %r' % versionPredicateStr)
         self.name, paren = match.groups()
         paren = paren.strip()
         if paren:
             match = re_paren.match(paren)
             if not match:
-                raise ValueError("expected parenthesized list: %r" % paren)
+                raise ValueError('expected parenthesized list: %r' % paren)
             str = match.groups()[0]
-            self.pred = [self._splitUp(aPred) for aPred in str.split(",")]
+            self.pred = [self._splitUp(aPred) for aPred in str.split(',')]
             if not self.pred:
-                raise ValueError("empty parenthesized list in %r"
+                raise ValueError('empty parenthesized list in %r'
                                  % versionPredicateStr)
         else:
             self.pred = []
 
     def __str__(self):
         if self.pred:
-            seq = [cond + " " + str(ver) for cond, ver in self.pred]
-            return self.name + " (" + ", ".join(seq) + ")"
+            seq = [cond + ' ' + str(ver) for cond, ver in self.pred]
+            return self.name + ' (' + ', '.join(seq) + ')'
         else:
             return self.name
 
@@ -303,10 +303,10 @@ class VersionPredicate:
         Return (comparison string, LooseVersion)
         """
         re_splitComparison = re.compile(
-            r"^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$")
+            r'^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$')
         res = re_splitComparison.match(pred)
         if not res:
-            raise ValueError("bad package restriction syntax: %r" % pred)
+            raise ValueError('bad package restriction syntax: %r' % pred)
         comp, verStr = res.groups()
         return (comp, LooseVersion(verStr))
 
@@ -316,8 +316,8 @@ class VersionPredicate:
         The parameter version must be acceptable to the LooseVersion
         constructor.  It may be either a string or LooseVersion.
         """
-        compmap = {"<": operator.lt, "<=": operator.le, "==": operator.eq,
-                   ">": operator.gt, ">=": operator.ge, "!=": operator.ne}
+        compmap = {'<': operator.lt, '<=': operator.le, '==': operator.eq,
+                   '>': operator.gt, '>=': operator.ge, '!=': operator.ne}
 
         for cond, ver in self.pred:
             if not compmap[cond](version, ver):

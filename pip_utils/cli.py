@@ -24,7 +24,7 @@ def _distribution(value):
     try:
         return get_distribution(value)
     except DistributionNotFound:
-        raise argparse.ArgumentTypeError("invalid package: '%s'" % value)
+        raise argparse.ArgumentTypeError('invalid package: %r' % value)
 
 
 def _parser():

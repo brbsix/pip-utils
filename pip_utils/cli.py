@@ -144,12 +144,12 @@ def main(args=None):
     """Start application."""
     parser = _parser()
 
-    # Python 2 will error 'too few arguments' if no subcommands are provided
-    # No such error occurs in Python 3, making it feasible to check whether
-    # any subcommands were provided and display a help message if not.
-    # argparse internals vary significantly over the different major versions,
-    # so it's much easier to just override the args passed to it. In this case,
-    # print the usage message if there are no args.
+    # Python 2 will error 'too few arguments' if no subcommand is supplied.
+    # No such error occurs in Python 3, which makes it feasible to check
+    # whether a subcommand was provided (displaying a help message if not).
+    # argparse internals vary significantly over the major versions, so it's
+    # much easier to just override the args passed to it. In this case, print
+    # the usage message if there are no args.
     if args is None and sys.argv is []:
         sys.argv.append('--help')
 

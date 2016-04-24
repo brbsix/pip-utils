@@ -16,7 +16,7 @@ def command_locate(options):
     """Command launched by CLI."""
     match = find_owner(options.file.name)
 
-    if match is not None:
+    if match:
         print(match)
 
 

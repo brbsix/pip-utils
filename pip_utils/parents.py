@@ -5,7 +5,7 @@
 from __future__ import absolute_import, print_function
 
 # external imports
-from pip.utils import get_installed_distributions
+from pip import get_installed_distributions
 from pkg_resources import get_distribution
 
 

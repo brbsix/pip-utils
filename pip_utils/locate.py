@@ -9,7 +9,7 @@ import os
 
 # external imports
 from pip.commands.show import search_packages_info
-from pip.utils import get_installed_distributions
+from pip import get_installed_distributions
 
 
 def command_locate(options):

@@ -5,7 +5,7 @@
 from __future__ import absolute_import, print_function
 
 # external imports
-import pip
+from pip import get_installed_distributions
 
 
 def command_dependants(options):
@@ -21,7 +21,7 @@ def command_dependants(options):
 
 def get_dependants(project_name):
     """Yield dependants of indicated package name."""
-    for package in pip.get_installed_distributions():
+    for package in get_installed_distributions():
         for requirement_package in package.requires():
             requirement_name = requirement_package.project_name
             # perform case-insensitive matching

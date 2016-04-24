@@ -149,12 +149,12 @@ class ListCommand(object):
             finder = cls._build_package_finder(options, index_urls, session)
             finder.add_dependency_links(dependency_links)
 
-            installed_packages = get_installed_distributions(
+            cls.installed_distributions = get_installed_distributions(
                 local_only=options.get('local'),
                 user_only=options.get('user'),
                 editables_only=options.get('editable'),
             )
-            for dist in installed_packages:
+            for dist in cls.installed_distributions:
                 all_candidates = finder.find_all_candidates(dist.key)
                 if not options.get('pre'):
                     # Remove prereleases
@@ -173,12 +173,6 @@ class ListCommand(object):
     @classmethod
     def get_dependants(cls, dist):
         """Yield dependant user packages for a given package name."""
-
-        # cache installed user distributions for re-runs
-        if cls.installed_distributions is None:
-            cls.installed_distributions = get_installed_distributions(
-                user_only=True)
-
         for package in cls.installed_distributions:
             for requirement_package in package.requires():
                 requirement_name = requirement_package.project_name

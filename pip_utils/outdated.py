@@ -219,10 +219,11 @@ class ListCommand(object):
         else:
             return '%s (%s)' % (dist.project_name, dist.version)
 
-    def run_outdated(self, options):
+    @classmethod
+    def run_outdated(cls, options):
         """Print outdated user packages."""
         latest_versions = sorted(
-            self.find_packages_latest_versions(self.options),
+            cls.find_packages_latest_versions(cls.options),
             key=lambda p: p[0].project_name.lower())
 
         for dist, latest_version, typ in latest_versions:
@@ -230,15 +231,15 @@ class ListCommand(object):
                 if options.all:
                     pass
                 elif options.pinned:
-                    if self.can_be_updated(dist, latest_version):
+                    if cls.can_be_updated(dist, latest_version):
                         continue
                 elif not options.pinned:
-                    if not self.can_be_updated(dist, latest_version):
+                    if not cls.can_be_updated(dist, latest_version):
                         continue
 
                 print(dist.project_name if options.brief else
                       '%s - Latest: %s [%s]' %
-                      (self.output_package(dist), latest_version, typ))
+                      (cls.output_package(dist), latest_version, typ))
 
 
 # pylint: disable=too-few-public-methods

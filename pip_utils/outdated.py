@@ -11,7 +11,6 @@ import re
 
 # external imports
 from distutils.version import LooseVersion
-import pip
 from pip.download import PipSession
 from pip.index import PackageFinder
 from pip.utils import (
@@ -177,7 +176,7 @@ class ListCommand(object):
 
         # cache installed user distributions for re-runs
         if cls.installed_distributions is None:
-            cls.installed_distributions = pip.get_installed_distributions(
+            cls.installed_distributions = get_installed_distributions(
                 user_only=True)
 
         for package in cls.installed_distributions:

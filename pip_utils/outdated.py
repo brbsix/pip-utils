@@ -28,7 +28,7 @@ class ListCommand(object):
 
     options = {
         'help': None,
-        'local': False,
+        'local': True,
         'no_index': False,
         'allow_all_insecure': False,
         'process_dependency_links': False,

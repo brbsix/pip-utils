@@ -12,7 +12,10 @@ from pkg_resources import get_distribution
 # pylint: disable=unused-argument
 def command_parents(options):
     """Command launched by CLI."""
-    print(*get_parents(), sep='\n')
+    parents = get_parents()
+
+    if parents:
+        print(*parents, sep='\n')
 
 
 def get_parents():

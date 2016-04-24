@@ -150,7 +150,7 @@ def main(args=None):
     # argparse internals vary significantly over the major versions, so it's
     # much easier to just override the args passed to it. In this case, print
     # the usage message if there are no args.
-    if args is None and sys.argv is []:
+    if args is None and len(sys.argv) <= 1:
         sys.argv.append('--help')
 
     options = parser.parse_args(args)

@@ -4,6 +4,9 @@
 # Python 2 forwards-compatibility
 from __future__ import absolute_import, print_function
 
+# standard imports
+from site import ENABLE_USER_SITE
+
 # external imports
 from pip import get_installed_distributions
 from pkg_resources import get_distribution
@@ -20,7 +23,7 @@ def command_parents(options):
 
 def get_parents():
     """Return sorted list of names of packages without dependants."""
-    distributions = get_installed_distributions(user_only=True)
+    distributions = get_installed_distributions(user_only=ENABLE_USER_SITE)
     remaining = {d.project_name.lower() for d in distributions}
     requirements = {r.project_name.lower() for d in distributions for
                     r in d.requires()}

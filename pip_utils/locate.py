@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function
 
 # standard imports
 import os
+from site import ENABLE_USER_SITE
 
 # external imports
 from pip.commands.show import search_packages_info
@@ -26,7 +27,7 @@ def find_owner(path):
 
     packages = search_packages_info(
         sorted((d.project_name for d in
-                get_installed_distributions(user_only=True)),
+                get_installed_distributions(user_only=ENABLE_USER_SITE)),
                key=lambda d: d.lower()))
 
     for package in packages:

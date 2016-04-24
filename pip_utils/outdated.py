@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function
 import operator
 import os
 import re
+from site import ENABLE_USER_SITE
 
 # external imports
 from distutils.version import LooseVersion
@@ -59,7 +60,7 @@ class ListCommand(object):
         'cert': None,
         'uptodate': False,
         'extra_index_urls': [],
-        'user': True,
+        'user': ENABLE_USER_SITE,
         'verbose': 0
     }
 

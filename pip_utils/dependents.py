@@ -8,11 +8,6 @@ from __future__ import absolute_import, print_function
 import pkg_resources
 
 
-def case_sorted(items):
-    """Return unique list sorted in case-insensitive order."""
-    return sorted({i for i in items}, key=lambda i: i.lower())
-
-
 def command_dependents(options):
     """Command launched by CLI."""
     depends = dependencies(options.package, options.recursive, options.info)
@@ -23,6 +18,10 @@ def command_dependents(options):
 
 def dependencies(dist, recursive=False, info=False):
     """Yield distribution's dependencies."""
+
+    def case_sorted(items):
+        """Return unique list sorted in case-insensitive order."""
+        return sorted({i for i in items}, key=lambda i: i.lower())
 
     def modifier(distribution):
         """Return project's name or full requirement string."""

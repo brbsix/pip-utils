@@ -3,7 +3,7 @@
 Application setup script
 
 To build package:
-python setup.py sdist bdist_wheel clean
+python setup.py sdist clean
 
 To run tests in an virtualenv:
 python setup.py test

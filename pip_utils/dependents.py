@@ -10,10 +10,10 @@ import pkg_resources
 
 def command_dependents(options):
     """Command launched by CLI."""
-    depends = dependencies(options.package, options.recursive, options.info)
+    dependents = dependencies(options.package, options.recursive, options.info)
 
-    if depends:
-        print(*depends, sep='\n')
+    if dependents:
+        print(*dependents, sep='\n')
 
 
 def dependencies(dist, recursive=False, info=False):

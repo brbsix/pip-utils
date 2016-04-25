@@ -57,7 +57,7 @@ setup(
     long_description=long_description(),
     url='https://github.com/brbsix/pip-utils',
     license='GPLv3',
-    keywords=['package', 'pip', 'PyPi'],
+    keywords=['package', 'packaging', 'pip', 'PyPi'],
     packages=['pip_utils'],
     install_requires=INSTALL_REQUIRES,
     setup_requires=SETUP_REQUIRES,

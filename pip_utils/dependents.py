@@ -23,15 +23,17 @@ def dependencies(dist, recursive=False, info=False):
         """Return unique list sorted in case-insensitive order."""
         return sorted({i for i in items}, key=lambda i: i.lower())
 
+    def requires(distribution):
+        """Return the requirements for a distribution."""
+        if recursive:
+            req = set(pkg_resources.require(distribution.project_name))
+            req.remove(distribution)
+            return {r.as_requirement() for r in req}
+        else:
+            return distribution.requires()
+
     def modifier(distribution):
         """Return project's name or full requirement string."""
         return str(distribution) if info else distribution.project_name
 
-    if recursive:
-        requires = set(pkg_resources.require(dist.project_name))
-        requires.remove(dist)
-        requires = {r.as_requirement() for r in requires}
-    else:
-        requires = dist.requires()
-
-    return case_sorted(modifier(r) for r in requires)
+    return case_sorted(modifier(r) for r in requires(dist))

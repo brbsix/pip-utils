@@ -23,10 +23,15 @@ def command_dependants(options):
 
 
 def get_dependants(project_name):
-    """Yield dependants of indicated package name."""
+    """Yield dependants of `project_name`."""
     for package in get_installed_distributions(user_only=ENABLE_USER_SITE):
-        for requirement_package in package.requires():
-            requirement_name = requirement_package.project_name
-            # perform case-insensitive matching
-            if requirement_name.lower() == project_name.lower():
-                yield package.project_name
+        if is_dependant(package, project_name):
+            yield package.project_name
+
+
+def is_dependant(package, project_name):
+    """Determine whether `package` is a dependant of `project_name`."""
+    for requirement in package.requires():
+        # perform case-insensitive matching
+        if requirement.project_name.lower() == project_name.lower():
+            return True

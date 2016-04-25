@@ -104,7 +104,7 @@ def _parser():
     parser_outdated = subparsers.add_parser(
         'outdated',
         add_help=False,
-        help='list outdated user packages that may be updated')
+        help='list outdated packages that may be updated')
     parser_outdated.add_argument(
         '-b', '--brief',
         action='store_true',
@@ -113,11 +113,11 @@ def _parser():
     group.add_argument(
         '-a', '--all',
         action='store_true',
-        help='list all outdated user packages')
+        help='list all outdated packages')
     group.add_argument(
         '-p', '--pinned',
         action='store_true',
-        help='list outdated user packages unable to be updated')
+        help='list outdated packages unable to be updated')
     parser_outdated.add_argument(
         '-h', '--help',
         action='help',

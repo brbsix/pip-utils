@@ -88,7 +88,7 @@ def _parser():
     parser_locate = subparsers.add_parser(
         'locate',
         add_help=False,
-        help='identify package that file belongs to')
+        help='identify packages that file belongs to')
     parser_locate.add_argument(
         'file',
         metavar='FILE',

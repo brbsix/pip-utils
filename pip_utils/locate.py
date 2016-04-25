@@ -15,14 +15,14 @@ from pip import get_installed_distributions
 
 def command_locate(options):
     """Command launched by CLI."""
-    match = find_owner(options.file.name)
+    matches = find_owners(options.file.name)
 
-    if match:
-        print(match)
+    if matches:
+        print(*matches, sep='\n')
 
 
-def find_owner(path):
-    """Return the package that file belongs to."""
+def find_owners(path):
+    """Return the package(s) that file belongs to."""
     abspath = os.path.abspath(path)
 
     packages = search_packages_info(
@@ -30,16 +30,18 @@ def find_owner(path):
                 get_installed_distributions(user_only=ENABLE_USER_SITE)),
                key=lambda d: d.lower()))
 
-    for package in packages:
-        try:
-            files = package['files']
-            location = package['location']
-            name = package['name']
-        except KeyError:
-            continue
+    return [p['name'] for p in packages if is_owner(p, abspath)]
 
-        paths = (os.path.abspath(os.path.join(location, f))
-                 for f in files)
 
-        if abspath in paths:
-            return name
+def is_owner(package, abspath):
+    """Determine whether `abspath` belongs to `package`."""
+    try:
+        files = package['files']
+        location = package['location']
+    except KeyError:
+        return False
+
+    paths = (os.path.abspath(os.path.join(location, f))
+             for f in files)
+
+    return abspath in paths

@@ -3,13 +3,13 @@
 Application setup script
 
 To build package:
-python3 setup.py sdist bdist_wheel clean
+python setup.py sdist bdist_wheel clean
 
 To run tests in an virtualenv:
-python3 setup.py test
+python setup.py test
 
 To run tests directly with verbose output:
-python3 -m pytest -vv
+python -m pytest -vv
 """
 
 # Python 2 forwards-compatibility

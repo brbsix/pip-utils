@@ -46,12 +46,7 @@ def read(*names, **kwargs):
 
 SETUP_REQUIRES = ['pytest-runner']
 INSTALL_REQUIRES = ['pip']
-TESTS_REQUIRE = []
-
-# pylint will only install on Python 2.7.x and later
-if sys.version_info >= (2, 7):
-    TESTS_REQUIRE.append('pytest-pylint')
-    os.environ['PYTEST_ADDOPTS'] = '--pylint'
+TESTS_REQUIRE = ['pytest-pylint']  # Python 2.7 & 3.3+ only
 
 setup(
     name=__program__,

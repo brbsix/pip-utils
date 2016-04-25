@@ -9,12 +9,7 @@ import pkg_resources
 
 
 def case_sorted(items):
-    """
-    Return sorted list of unique case-correct items.
-
-    Packages are listed in a case-insensitive sorted order.
-    """
-
+    """Return unique list sorted in case-insensitive order."""
     return sorted({i for i in items}, key=lambda i: i.lower())
 
 

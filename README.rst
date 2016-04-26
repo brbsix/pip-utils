@@ -1,6 +1,28 @@
 pip-utils
 ---------
 
+.. start-badges
+
+|version| |license| |wheel| |supported-versions|
+
+.. |version| image:: https://img.shields.io/pypi/v/pip-utils.svg
+    :alt: PyPI Package latest release
+    :target: https://pypi.python.org/pypi/pip-utils
+
+.. |license| image:: https://img.shields.io/pypi/l/pip-utils.svg
+    :alt: License
+    :target: https://pypi.python.org/pypi/pip-utils
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/pip-utils.svg
+    :alt: PyPI Wheel
+    :target: https://pypi.python.org/pypi/pip-utils
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/pip-utils.svg
+    :alt: Supported versions
+    :target: https://pypi.python.org/pypi/pip-utils
+
+.. end-badges
+
 Helper utilities for pip.
 
 

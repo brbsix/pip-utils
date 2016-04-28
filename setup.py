@@ -46,7 +46,7 @@ def read(*names, **kwargs):
 
 
 SETUP_REQUIRES = ['pytest-runner']
-INSTALL_REQUIRES = ['pip']
+INSTALL_REQUIRES = ['pip>=8.0.0']
 TESTS_REQUIRE = ['pytest-pylint']  # Python 2.7 & 3.3+ only
 
 setup(
@@ -83,9 +83,6 @@ setup(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.0',
-        'Programming Language :: Python :: 3.1',
-        'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',

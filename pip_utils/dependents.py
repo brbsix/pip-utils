@@ -21,7 +21,7 @@ def dependencies(dist, recursive=False, info=False):
 
     def case_sorted(items):
         """Return unique list sorted in case-insensitive order."""
-        return sorted({i for i in items}, key=lambda i: i.lower())
+        return sorted(set(items), key=lambda i: i.lower())
 
     def requires(distribution):
         """Return the requirements for a distribution."""

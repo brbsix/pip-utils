@@ -60,6 +60,8 @@ Usage
 
 For Python 2, use ``pip2-utils``. For Python 3, use ``pip3-utils``. Or, use ``python -m pip_utils``.
 
+By default, pip-utils will interact with packages installed to the user site (e.g. via ``--user``). If you wish to disable this, as would often be the case in a virtualenv or with the system installation, call pip-utils with Python's ``-s`` option (e.g. ``python -sm pip_utils``).
+
 
 Commands
 ========

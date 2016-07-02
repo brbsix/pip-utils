@@ -16,7 +16,7 @@ from __future__ import absolute_import
 import sys
 
 # application imports
-from .cli import main
+from pip_utils.cli import main
 
 
 if __name__ == '__main__':

@@ -4,6 +4,15 @@
 jobs=2
 
 
+[MESSAGES CONTROL]
+
+# Disable the message, report, category or checker with the given id(s). You
+# can either give multiple identifier separated by comma (,) or put this option
+# multiple time (only on the command line, not in the configuration file where
+# it should appear only once).
+disable=E1102
+
+
 [REPORTS]
 
 # Tells whether to display a full report or only the messages

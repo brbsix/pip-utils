@@ -9,7 +9,7 @@ import argparse
 import sys
 
 # external imports
-from pkg_resources import DistributionNotFound, get_distribution
+from pip._vendor.pkg_resources import DistributionNotFound, get_distribution
 
 # application imports
 from . import __description__, __version__

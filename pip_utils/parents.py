@@ -9,7 +9,7 @@ from site import ENABLE_USER_SITE
 
 # external imports
 from pip import get_installed_distributions
-from pkg_resources import get_distribution
+from pip._vendor.pkg_resources import get_distribution
 
 
 # pylint: disable=unused-argument

@@ -5,7 +5,7 @@
 from __future__ import absolute_import, print_function
 
 # external imports
-import pkg_resources
+from pip._vendor import pkg_resources
 
 
 def command_dependents(options):

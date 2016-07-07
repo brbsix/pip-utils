@@ -10,7 +10,7 @@ standalone: pip_utils/*.py
 	zip --quiet pip-utils -r pip/ pip-8.1.2.dist-info/
 	zip --quiet --junk-paths pip-utils pip_utils/__main__.py
 	rm -rf pip/ pip-8.1.2.dist-info/
-	echo '#!/usr/bin/env python3' > pip-utils
+	echo '#!/usr/bin/env python' > pip-utils
 	cat pip-utils.zip >> pip-utils
 	rm pip-utils.zip
 	chmod a+x pip-utils

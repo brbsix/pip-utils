@@ -13,5 +13,5 @@ install:
 
 script:
 - python setup.py test
-- make package
+- python setup.py bdist_wheel sdist
 - make standalone

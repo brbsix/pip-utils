@@ -14,3 +14,4 @@ install:
 script:
 - python setup.py test
 - make package
+- make standalone

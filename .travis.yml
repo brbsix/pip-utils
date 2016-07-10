@@ -11,4 +11,6 @@ install:
 - pip install --upgrade pip setuptools
 - pip install -e .[testing]  # install setup + test requirements
 
-script: python setup.py test
+script:
+- python setup.py test
+- make package

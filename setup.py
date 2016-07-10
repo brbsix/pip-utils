@@ -45,7 +45,8 @@ def read(*names, **kwargs):
     ).read()
 
 
-SETUP_REQUIRES = ['pytest-runner']
+SETUP_REQUIRES = ['pytest-runner'] if \
+    {'ptr', 'pytest', 'test'}.intersection(sys.argv) else []
 INSTALL_REQUIRES = ['pip>=8.0.0']
 TESTS_REQUIRE = ['pytest-pylint']  # Python 2.7 & 3.3+ only
 

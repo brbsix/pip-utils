@@ -8,10 +8,10 @@ from __future__ import absolute_import, print_function
 import operator
 import os
 import re
+from distutils.version import LooseVersion
 from site import ENABLE_USER_SITE
 
 # external imports
-from distutils.version import LooseVersion
 from pip.download import PipSession
 from pip.index import PackageFinder
 from pip.utils import (

@@ -118,6 +118,11 @@ def _parser():
         '-p', '--pinned',
         action='store_true',
         help='list outdated packages unable to be updated')
+    group.add_argument(
+        '-U', '--update',
+        action='store_true',
+        help='update packages that can be updated'
+    )
     parser_outdated.add_argument(
         '-h', '--help',
         action='help',

@@ -12,6 +12,7 @@ from distutils.version import LooseVersion
 from site import ENABLE_USER_SITE
 
 # external imports
+import pip
 from pip.download import PipSession
 from pip.index import PackageFinder
 from pip.utils import (
@@ -61,7 +62,8 @@ class ListCommand(object):
         'uptodate': False,
         'extra_index_urls': [],
         'user': ENABLE_USER_SITE,
-        'verbose': 0
+        'verbose': 0,
+        'update': False
     }
 
     @staticmethod
@@ -223,6 +225,13 @@ class ListCommand(object):
 
         for dist, latest_version, typ in latest_versions:
             if latest_version > dist.parsed_version:
+
+                if options.update and not options.pinned:
+                    print(dist.project_name if options.brief else
+                          'Updating %s to Latest: %s [%s]' %
+                          (cls.output_package(dist), latest_version, typ))
+                    pip.main(['install', '--upgrade', dist.key])
+
                 if options.all:
                     pass
                 elif options.pinned:
@@ -232,9 +241,10 @@ class ListCommand(object):
                     if not cls.can_be_updated(dist, latest_version):
                         continue
 
-                print(dist.project_name if options.brief else
-                      '%s - Latest: %s [%s]' %
-                      (cls.output_package(dist), latest_version, typ))
+                if not options.update:
+                    print(dist.project_name if options.brief else
+                          '%s - Latest: %s [%s]' %
+                          (cls.output_package(dist), latest_version, typ))
 
 
 # pylint: disable=too-few-public-methods

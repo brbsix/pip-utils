@@ -29,9 +29,17 @@ Helper utilities for pip.
 Installation
 ============
 
+Download from PyPI:
+
 ::
 
     pip install --user pip-utils
+
+pip-utils is also available here_ as a ZIP application [0]_. Once you've download it, you can install it to a directory on your PATH:
+
+::
+
+    install pip-utils ~/.local/bin
 
 
 Usage
@@ -60,7 +68,9 @@ Usage
 
 For Python 2, use ``pip2-utils``. For Python 3, use ``pip3-utils``. Or, use ``python -m pip_utils``.
 
-By default, pip-utils will interact with packages installed to the user site (e.g. via ``--user``). If you wish to disable this, as would often be the case in a virtualenv or with the system installation, call pip-utils with Python's ``-s`` option (e.g. ``python -sm pip_utils``).
+If you've installed the standalone executable on your PATH, your can call ``pip-utils``. Or run it directly with the Python interpreter of your choice, e.g. ``python3.5 ~/.local/bin/pip-utils``.
+
+By default, pip-utils will interact with packages installed to the user site (assuming the user site is available). To disable this behavior, call pip-utils with Python's ``-s`` option (i.e. ``python -sm pip_utils``) or ``PYTHONNOUSERSITE`` environment variable (i.e. ``PYTHONNOUSERSITE=1 python -m pip_utils``).
 
 
 Commands
@@ -166,3 +176,6 @@ License
 Copyright (c) 2016 Six (brbsix@gmail.com).
 
 Licensed under the GPLv3 license.
+
+.. [0] https://bugs.python.org/issue1739468
+.. _here: https://github.com/brbsix/pip-utils/releases/latest

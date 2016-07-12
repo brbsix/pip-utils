@@ -9,14 +9,11 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 	python2 setup.py bdist_wheel clean
 
 standalone: pip_utils/*.py
-	pip download --only-binary :all: pip==8.1.2
-	mv pip-8.1.2-py2.py3-none-any.whl pip-8.1.2-py2.py3-none-any.whl.zip
-	unzip -d pip-8.1.2-py2.py3-none-any.whl pip-8.1.2-py2.py3-none-any.whl.zip
-	rm pip-8.1.2-py2.py3-none-any.whl.zip
+	pip install --target . pip==8.1.2
 	zip --quiet pip-utils pip_utils/*.py --exclude pip_utils/__main__.py
-	zip --quiet pip-utils -r pip-8.1.2-py2.py3-none-any.whl/
+	zip --quiet pip-utils -r pip/ pip-8.1.2.dist-info/
 	zip --quiet --junk-paths pip-utils pip_utils/__main__.py
-	rm -rf pip-8.1.2-py2.py3-none-any.whl/
+	rm -rf pip/ pip-8.1.2.dist-info/
 	echo '#!/usr/bin/env python' > pip-utils
 	cat pip-utils.zip >> pip-utils
 	rm pip-utils.zip

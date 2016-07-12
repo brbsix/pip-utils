@@ -13,15 +13,11 @@ Why does this file exist, and why __main__? For more info, read:
 from __future__ import absolute_import
 
 # standard imports
-import os
 import sys
 
+# application imports
+from pip_utils.cli import main
 
-# include pip wheel in standalone zip
-if __package__ is '':
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(
-        os.path.abspath(__file__))), 'pip-8.1.2-py2.py3-none-any.whl'))
 
 if __name__ == '__main__':
-    from pip_utils.cli import main
     sys.exit(main())

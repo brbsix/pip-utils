@@ -142,7 +142,7 @@ Identify package(s) that file belongs to:
 outdated
 --------
 
-List outdated packages that may be updated. Note, this differ's from pip's ``--outdated`` flag in that it verifies that there are no conflicting dependencies that would otherwise make an update inadvisable.
+List outdated packages that may be updated. This differ's from pip's ``--outdated`` flag in that it verifies that there are no conflicting dependencies that would otherwise make an update inadvisable.
 
 ::
 

@@ -62,8 +62,7 @@ class ListCommand(object):
         'uptodate': False,
         'extra_index_urls': [],
         'user': ENABLE_USER_SITE,
-        'verbose': 0,
-        'update': False
+        'verbose': 0
     }
 
     @staticmethod

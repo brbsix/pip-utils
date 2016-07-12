@@ -236,9 +236,9 @@ class ListCommand(object):
                         print(dist.project_name if options.brief else
                               'Updating %s to Latest: %s [%s]' %
                               (cls.output_package(dist), latest_version, typ))
-                        pip.main(
-                            ['install', '--upgrade'] + (['--user'] if
-                                ENABLE_USER_SITE else []) + [dist.key])
+                        pip.main(['install', '--upgrade'] + ([
+                            '--user'
+                        ] if ENABLE_USER_SITE else []) + [dist.key])
                         continue
 
                 print(dist.project_name if options.brief else

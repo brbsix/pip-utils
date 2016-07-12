@@ -1,4 +1,8 @@
-.PHONY: package standalone
+.PHONY: clean package standalone
+
+clean:
+	rm -rf build/ pip_utils.egg-info/ pip-utils
+	find pip_utils/ \( -name __pycache__ -o -name '*.pyc' \) -delete
 
 package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 	python3 setup.py bdist_wheel sdist

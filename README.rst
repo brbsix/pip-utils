@@ -160,6 +160,12 @@ List outdated packages unable to be updated due to dependency requirements:
 
     pip3-utils outdated --pinned
 
+Update all outdated packages that may be updated.
+
+::
+
+    pip3-utils outdated --upgrade
+
 parents
 -------
 

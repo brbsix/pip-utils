@@ -1,5 +1,6 @@
+=========
 pip-utils
----------
+=========
 
 .. start-badges
 
@@ -76,12 +77,18 @@ By default, pip-utils will interact with packages installed to the user site (as
 Commands
 ========
 
+dependants
+----------
+
 List dependants of a package:
 
 ::
 
     $ pip3-utils dependants pexpect
     ipython
+
+dependents
+----------
 
 List direct dependents of a package:
 
@@ -122,12 +129,18 @@ List all dependencies of a package recursively:
     six
     SQLAlchemy
 
+locate
+------
+
 Identify package(s) that file belongs to:
 
 ::
 
     $ pip3-utils locate ~/.local/bin/symilar
     pylint
+
+outdated
+--------
 
 List outdated packages that may be updated. Note, this differ's from pip's ``--outdated`` flag in that it verifies that there are no conflicting dependencies that would otherwise make an update inadvisable.
 
@@ -146,6 +159,9 @@ List outdated packages unable to be updated due to dependency requirements:
 ::
 
     pip3-utils outdated --pinned
+
+parents
+-------
 
 List packages lacking dependants:
 

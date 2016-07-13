@@ -9,12 +9,10 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 	python2 setup.py bdist_wheel clean
 
 pex: pip_utils/*.py setup.py
-	git clone --depth=1 https://github.com/pantsbuild/pex
-	sed -i 's/^\(\s*scrub_paths\) = user_site_distributions$$/\1 = OrderedSet()/' pex/pex/pex.py
 	virtualenv env
-	cd pex/ && ../env/bin/python setup.py install && cd ..
+	env/bin/pip install 'git+https://github.com/brbsix/pex'
 	python setup.py bdist_wheel --universal
-	env/bin/python -m pex.bin.pex --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
+	env/bin/pex --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
 	rm -rf env/ pex/ dist/pip_utils-*-py2.py3-none-any.whl
 	chmod a+x pip-utils
 

@@ -8,7 +8,7 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 	python3 setup.py bdist_wheel sdist
 	python2 setup.py bdist_wheel clean
 
-pex: pip_utils/*.py
+pex: pip_utils/*.py setup.py
 	git clone --depth=1 https://github.com/pantsbuild/pex
 	sed -i 's/^\(\s*scrub_paths\) = user_site_distributions$$/\1 = OrderedSet()/' pex/pex/pex.py
 	virtualenv env

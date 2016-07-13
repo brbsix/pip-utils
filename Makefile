@@ -12,7 +12,7 @@ pex: pip_utils/*.py setup.py
 	virtualenv env
 	env/bin/pip install 'git+https://github.com/brbsix/pex'
 	python setup.py bdist_wheel --universal
-	env/bin/pex --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
+	env/bin/pex --disable-cache --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
 	rm -rf env/ pex/ dist/pip_utils-*-py2.py3-none-any.whl
 	chmod a+x pip-utils
 

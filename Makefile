@@ -16,6 +16,7 @@ pex: pip_utils/*.py
 	python setup.py bdist_wheel --universal
 	env/bin/python -m pex.bin.pex --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
 	rm -rf env/ pex/ dist/pip_utils-*-py2.py3-none-any.whl
+	chmod a+x pip-utils
 
 standalone: pip_utils/*.py
 	pip install --target . pip==8.1.2

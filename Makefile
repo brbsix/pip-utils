@@ -10,7 +10,7 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 
 pex: pip_utils/*.py setup.py
 	virtualenv env
-	env/bin/pip install 'git+https://github.com/brbsix/pex'
+	env/bin/pip install 'git+https://github.com/brbsix/pex.git@package'
 	python setup.py bdist_wheel --universal
 	env/bin/pex --disable-cache --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
 	rm -rf env/ pex/ dist/pip_utils-*-py2.py3-none-any.whl

@@ -315,8 +315,13 @@ class VersionPredicate(object):
                    '>': operator.gt, '>=': operator.ge, '!=': operator.ne}
 
         for cond, ver in self.pred:
-            if not compmap[cond](version, ver):
-                return False
+            try:
+                if not compmap[cond](version, ver):
+                    return False
+            except TypeError:
+                # suppress bug that can occur in Python 3.x
+                # https://bugs.python.org/issue14894
+                pass
         return True
 
 

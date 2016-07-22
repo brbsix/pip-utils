@@ -319,8 +319,9 @@ class VersionPredicate(object):
                 if not compmap[cond](version, ver):
                     return False
             except TypeError:
-                # suppress bug that can occur in Python 3.x
-                # https://bugs.python.org/issue14894
+                # suppress unorderable types error in Python 3.x
+                # e.g. LooseVersion('1.1rc5') > LooseVersion('1.1.2')
+                # See: https://bugs.python.org/issue14894
                 pass
         return True
 

@@ -8,11 +8,11 @@ from __future__ import absolute_import, print_function
 import operator
 import os
 import re
-from distutils.version import LooseVersion
 from site import ENABLE_USER_SITE
 
 # external imports
 import pip
+from pip._vendor.packaging.version import Version
 from pip.download import PipSession
 from pip.index import PackageFinder
 from pip.utils import (
@@ -126,7 +126,7 @@ class ListCommand(object):
             requires = dependant.requires()
             for requirement in cls.get_requirement(name, requires):
                 current = VersionPredicate(requirement)
-                if not current.satisfied_by(str(latest_version)):
+                if not current.satisfied_by(latest_version):
                     return False
 
         return True
@@ -250,7 +250,8 @@ class ListCommand(object):
 class VersionPredicate(object):
     """
     Parse and test package version predicates. Unlike the original,
-    this uses LooseVersion instead of StrictVersion.
+    this uses pip._vendor.packaging.version.Version instead of
+    distutils.version.StrictVersion.
 
     Sourced from: distutils.versionpredicate.VersionPredicate
     """
@@ -297,32 +298,22 @@ class VersionPredicate(object):
         """
         Parse a single version comparison.
 
-        Return (comparison string, LooseVersion)
+        Return (comparison string, Version)
         """
         res = re.match(r'^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$', pred)
         if not res:
             raise ValueError('bad package restriction syntax: %r' % pred)
         comparison, version = res.groups()
-        return (comparison, LooseVersion(version))
+        return (comparison, Version(version))
 
     def satisfied_by(self, version):
-        """
-        True if version is compatible with all the predicates in self.
-        The parameter version must be acceptable to the LooseVersion
-        constructor.  It may be either a string or LooseVersion.
-        """
+        """True if version is compatible with all the predicates in self."""
         compmap = {'<': operator.lt, '<=': operator.le, '==': operator.eq,
                    '>': operator.gt, '>=': operator.ge, '!=': operator.ne}
 
         for cond, ver in self.pred:
-            try:
-                if not compmap[cond](version, ver):
-                    return False
-            except TypeError:
-                # suppress unorderable types error in Python 3.x
-                # e.g. LooseVersion('1.1rc5') > LooseVersion('1.1.2')
-                # See: https://bugs.python.org/issue14894
-                pass
+            if not compmap[cond](version, ver):
+                return False
         return True
 
 

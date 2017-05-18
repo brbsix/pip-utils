@@ -2,7 +2,8 @@
 
 clean:
 	rm -rf build/ pip_utils.egg-info/
-	find pip_utils/ \( -name __pycache__ -o -name '*.pyc' \) -delete
+	find . -type f -name '*.pyc' -delete
+	find . -type d -name __pycache__ -delete
 
 package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 	python3 setup.py bdist_wheel sdist

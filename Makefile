@@ -10,12 +10,11 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 	python2 setup.py bdist_wheel clean
 
 pex: pip_utils/*.py setup.py
-	virtualenv env
-	env/bin/pip install 'pex>=1.1.14'
-	python setup.py bdist_wheel --universal
-	env/bin/pex --disable-cache --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python-shebang='#!/usr/bin/env python' dist/pip_utils-*-py2.py3-none-any.whl
-	rm -rf env/ pex/ dist/pip_utils-*-py2.py3-none-any.whl
-	chmod a+x pip-utils
+	python3 -m venv env
+	env/bin/pip install -U pip setuptools
+	env/bin/pip install -U 'pex[requests]'
+	env/bin/pex . --disable-cache --entry-point=pip_utils.cli:main --inherit-path --output-file=pip-utils --python=python2 --python=python3 --python-shebang='#!/usr/bin/env python'
+	rm -rf *.egg-info/
 
 standalone: pip_utils/*.py
 	pip install --target . pip==8.1.2

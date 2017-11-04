@@ -5,14 +5,13 @@
 from __future__ import absolute_import, print_function
 
 # standard imports
-import operator
 import os
-import re
 from site import ENABLE_USER_SITE
 
 # external imports
 import pip
-from pip._vendor.packaging.version import Version
+from pip._vendor.distlib.util import parse_requirement
+from pip._vendor.distlib.version import UnsupportedVersionError, get_scheme
 from pip.download import PipSession
 from pip.index import PackageFinder
 from pip.utils import (
@@ -119,14 +118,19 @@ class ListCommand(object):
     @classmethod
     def can_be_updated(cls, dist, latest_version):
         """Determine whether package can be updated or not."""
-
+        scheme = get_scheme('default')
         name = dist.project_name
         dependants = cls.get_dependants(name)
         for dependant in dependants:
             requires = dependant.requires()
             for requirement in cls.get_requirement(name, requires):
-                current = VersionPredicate(requirement)
-                if not current.satisfied_by(latest_version):
+                req = parse_requirement(requirement)
+                # Ignore error if version in requirement spec can't be parsed
+                try:
+                    matcher = scheme.matcher(req.requirement)
+                except UnsupportedVersionError:
+                    continue
+                if not matcher.match(str(latest_version)):
                     return False
 
         return True
@@ -188,7 +192,7 @@ class ListCommand(object):
         Yield matching requirement strings.
 
         The strings are presented in the format demanded by
-        distutils.versionpredicate.VersionPredicate. Hopefully
+        pip._vendor.distlib.util.parse_requirement. Hopefully
         I'll be able to figure out a better way to handle this
         in the future. Perhaps figure out how pip does it's
         version satisfaction tests and see if it is offloadable?
@@ -244,77 +248,6 @@ class ListCommand(object):
                 print(dist.project_name if options.brief else
                       '%s - Latest: %s [%s]' %
                       (cls.output_package(dist), latest_version, typ))
-
-
-# pylint: disable=too-few-public-methods
-class VersionPredicate(object):
-    """
-    Parse and test package version predicates. Unlike the original,
-    this uses pip._vendor.packaging.version.Version instead of
-    distutils.version.StrictVersion.
-
-    Sourced from: distutils.versionpredicate.VersionPredicate
-    """
-
-    def __init__(self, version_predicate):
-        """Parse a version predicate string."""
-        version_predicate = version_predicate.strip()
-        if not version_predicate:
-            raise ValueError('empty package restriction')
-
-        try:
-            flags = re.ASCII  # Python 3 support
-        except AttributeError:
-            flags = 0
-        # use re.compile() for flags support in Python 2.6
-        pattern = re.compile(r'(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)', flags)
-        match = pattern.match(version_predicate)
-        if not match:
-            raise ValueError('bad package name in %r' % version_predicate)
-
-        self.name, paren = match.groups()
-        paren = paren.strip()
-        if paren:
-            match = re.match(r'^\s*\((.*)\)\s*$', paren)
-            if not match:
-                raise ValueError('expected parenthesized list: %r' % paren)
-            pred_str = match.groups()[0]
-            self.pred = [self._split(p) for p in pred_str.split(',')]
-            if not self.pred:
-                raise ValueError('empty parenthesized list in %r'
-                                 % version_predicate)
-        else:
-            self.pred = []
-
-    def __str__(self):
-        if self.pred:
-            seq = ('%s %s' % (c, v) for c, v in self.pred)
-            return '%s (%s)' % (self.name, ', '.join(seq))
-        else:
-            return self.name
-
-    @staticmethod
-    def _split(pred):
-        """
-        Parse a single version comparison.
-
-        Return (comparison string, Version)
-        """
-        res = re.match(r'^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$', pred)
-        if not res:
-            raise ValueError('bad package restriction syntax: %r' % pred)
-        comparison, version = res.groups()
-        return (comparison, Version(version))
-
-    def satisfied_by(self, version):
-        """True if version is compatible with all the predicates in self."""
-        compmap = {'<': operator.lt, '<=': operator.le, '==': operator.eq,
-                   '>': operator.gt, '>=': operator.ge, '!=': operator.ne}
-
-        for cond, ver in self.pred:
-            if not compmap[cond](version, ver):
-                return False
-        return True
 
 
 def command_outdated(options):

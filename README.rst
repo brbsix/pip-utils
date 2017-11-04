@@ -36,7 +36,7 @@ Download from PyPI:
 
     pip install --user pip-utils
 
-pip-utils is also available here_ as a ZIP application [0]_. Once you've download it, you can install it to a directory on your PATH:
+pip-utils is also available here_ as a ZIP application [0]_. Once you've downloaded it, you can install it to a directory on your PATH:
 
 ::
 

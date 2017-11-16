@@ -20,7 +20,7 @@ deploy:
   provider: releases
   api_key:
     secure: iSAtwUJdVTg/8Bh9VpI2fFzAs1jRDH68n87qkdE6MTeSP2/JJvL7UMUbOuk0v4scyp3hIqcg2y2qVk/Lh6EQzXJo/YZCCQsNGqZHMh78FbFzajJFAXvQb5iox9l16A0ubwDFmUbBUcmwHXGKngLZghEPtcPorLej15d1qMgISv+ruD4zNag/MV+XOvqIDVeBuzZMfCUQLrdjzigREo4C3BbWkCp5304Rw7TXVrpDIZU7Kyea+r8RXC66wziVV/HRj+063iYFIOckj3VjKYKSJkj1oQFaA8WuG3hO900zLmY3qRngY9Pc7k2o6bAKYwPP4QiZSlbJa/BsiwXswxt7bBsZgNoxo8CvAQlYFLiI5VHmP16XEv5JyQzaDQUwwhBRzhcuxQMlwGh/gNeq5xWfNq5fqkdRPn8R0VXYnjES8p8T2hh2d3Ash7BouFK2OltHOebsApuTaAh5/9owvMvW0xbTP6XV+ZpndTUtCXwChlrgoBvQp8y89oFt++jFC+97c1TTkfJreOQErttrE10mCB8HQwUpDV81TqBgammwfIS1C+SbkY/GULJIRkc/OvietUkfQID+yv0dwx43yVgIPgEAUcwMQOGG3voUJf3RW+VcTDvuTpZW9NFUoz8IblJ3BrslLMaJJvD7dor5OHzXwTsYWYjbUf8syLqpUjNYYi8=
-  file: pip-utils
+  file: pip-utils.pex
   on:
     repo: brbsix/pip-utils
     tags: true

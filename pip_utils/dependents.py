@@ -29,8 +29,7 @@ def dependencies(dist, recursive=False, info=False):
             req = set(pkg_resources.require(distribution.project_name))
             req.remove(distribution)
             return {r.as_requirement() for r in req}
-        else:
-            return distribution.requires()
+        return distribution.requires()
 
     def modifier(distribution):
         """Return project's name or full requirement string."""

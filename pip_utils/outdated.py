@@ -216,8 +216,7 @@ class ListCommand(object):
                 dist.version,
                 dist.location,
             )
-        else:
-            return '%s (%s)' % (dist.project_name, dist.version)
+        return '%s (%s)' % (dist.project_name, dist.version)
 
     @classmethod
     def run_outdated(cls, options):

@@ -2,6 +2,7 @@ MAKEFLAGS += --warn-undefined-variables
 .DEFAULT_GOAL := package
 
 PEXBUILD_PYTHON := python3
+PEXBUILD_VENVTOOL := venv
 PEXBUILD_OUTPUT := pip-utils.pex
 PEXBUILD_SPECIFICATION := .
 
@@ -18,7 +19,7 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 
 .PHONY: pex
 pex: pip_utils/*.py setup.py
-	$(PEXBUILD_PYTHON) -m venv env
+	$(PEXBUILD_PYTHON) -m $(PEXBUILD_VENVTOOL) env
 	env/bin/pip install -U pip setuptools
 	env/bin/pip install -U 'pex[cachecontrol,requests]'
 	patch -N "$$(env/bin/python -c 'import pex.environment; print(pex.environment.__file__)')" fix_pex_import_order.patch || :

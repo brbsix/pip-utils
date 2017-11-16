@@ -8,13 +8,13 @@ python:
 - '3.5-dev'  # 3.5 development branch
 
 install:
-- pip install --upgrade pip setuptools
+- pip install --upgrade pip setuptools virtualenv
 - pip install -e .[testing]  # install setup + test requirements
 
 script:
 - python setup.py test
 - python setup.py bdist_wheel sdist
-- make pex
+- make PEXBUILD_PYTHON=python PEXBUILD_VENVTOOL=virtualenv pex
 
 deploy:
   provider: releases

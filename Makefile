@@ -22,7 +22,7 @@ pex: pip_utils/*.py setup.py
 	$(PEXBUILD_PYTHON) -m $(PEXBUILD_VENVTOOL) env
 	env/bin/pip install -U pip setuptools
 	env/bin/pip install -U 'pex[cachecontrol,requests]'
-	patch -N "$$(env/bin/python -c 'import pex.environment; print(pex.environment.__file__)')" fix_pex_import_order.patch || :
+	patch -N "$$(env/bin/python -c 'import os, pex, sys; print(os.path.join(pex.__path__[0], sys.argv[-1]))' environment.py)" fix_pex_import_order.patch || :
 	env/bin/pex $(PEXBUILD_SPECIFICATION) --disable-cache --entry-point=pip_utils --inherit-path --output-file=$(PEXBUILD_OUTPUT) --python=python2 --python=python3 --python-shebang='#!/usr/bin/env python'
 	rm -rf *.egg-info/
 

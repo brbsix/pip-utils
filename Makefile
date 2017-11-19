@@ -46,10 +46,8 @@ pex: pip_utils/*.py setup.py
 .PHONY: standalone
 standalone: pip_utils/*.py
 	rm -rf -- $(ZIPBUILD_BUILD_DIR)
-	pip --isolated install --no-compile --no-deps --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) pip==8.1.2
-	mkdir -- $(ZIPBUILD_ZIP_DIR)/pip_utils
-	cp pip_utils/*.py $(ZIPBUILD_ZIP_DIR)/pip_utils
-	mv $(ZIPBUILD_ZIP_DIR)/pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
+	pip --isolated install --no-compile --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) .
+	cp pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
 	cd $(ZIPBUILD_ZIP_DIR) && zip -9r ../pip-utils .
 	mkdir -- $(ZIPBUILD_OUTPUT_DIR)
 	cd $(ZIPBUILD_OUTPUT_DIR) && \

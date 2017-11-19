@@ -54,10 +54,9 @@ standalone: pip_utils/*.py
 	mv $(ZIPBUILD_ZIP_DIR)/pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
 	cd $(ZIPBUILD_ZIP_DIR) && zip -9r ../pip-utils .
 	mkdir -- $(ZIPBUILD_OUTPUT_DIR)
-	echo '#!/usr/bin/env python' > $(ZIPBUILD_OUTPUT_DIR)/pip-utils.standalone
-	cat $(ZIPBUILD_ZIP_FILE) >> $(ZIPBUILD_OUTPUT_DIR)/pip-utils.standalone
-	echo '#!/usr/bin/env python2' > $(ZIPBUILD_OUTPUT_DIR)/pip2-utils.standalone
-	cat $(ZIPBUILD_ZIP_FILE) >> $(ZIPBUILD_OUTPUT_DIR)/pip2-utils.standalone
-	echo '#!/usr/bin/env python3' > $(ZIPBUILD_OUTPUT_DIR)/pip3-utils.standalone
-	cat $(ZIPBUILD_ZIP_FILE) >> $(ZIPBUILD_OUTPUT_DIR)/pip3-utils.standalone
-	cd $(ZIPBUILD_OUTPUT_DIR) && chmod -v +x -- pip-utils.standalone pip2-utils.standalone pip3-utils.standalone
+	cd $(ZIPBUILD_OUTPUT_DIR) && \
+	  for v in '' 2 3; do \
+	    echo '#!/usr/bin/env python'"$$v" > "pip$$v-utils.standalone" && \
+	    cat ../$(ZIPBUILD_ZIP_FILE) >> "pip$$v-utils.standalone" && \
+	    chmod -v +x "pip$$v-utils.standalone"; \
+	  done

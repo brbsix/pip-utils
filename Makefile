@@ -12,9 +12,14 @@ PEXBUILD_SPECIFICATION := .
 PEXBUILD_PEX_REPO_URL := https://github.com/pantsbuild/pex.git
 PEXBUILD_PEX_REPO_DIR := $(PEXBUILD_BUILD_DIR)/pex
 
+ZIPBUILD_BUILD_DIR := build.zip
+ZIPBUILD_OUTPUT_DIR := out.zip
+ZIPBUILD_ZIP_DIR := $(ZIPBUILD_BUILD_DIR)/zip
+ZIPBUILD_ZIP_FILE := $(ZIPBUILD_BUILD_DIR)/pip-utils.zip
+
 .PHONY: clean
 clean:
-	rm -rf build/ pip_utils.egg-info/ $(PEXBUILD_BUILD_DIR)
+	rm -rf build/ pip_utils.egg-info/ $(PEXBUILD_BUILD_DIR) $(ZIPBUILD_BUILD_DIR)
 	find . -type f -name '*.pyc' -delete
 	find . -type d -name __pycache__ -delete
 
@@ -40,16 +45,19 @@ pex: pip_utils/*.py setup.py
 
 .PHONY: standalone
 standalone: pip_utils/*.py
-	pip install --target . pip==8.1.2
-	zip --quiet pip-utils pip_utils/*.py --exclude pip_utils/__main__.py
-	zip --quiet pip-utils -r pip/ pip-8.1.2.dist-info/ --exclude '*.pyc' --exclude '*/__pycache__/*'
-	zip --quiet --junk-paths pip-utils pip_utils/__main__.py
-	rm -rf pip/ pip-8.1.2.dist-info/
-	echo '#!/usr/bin/env python' > pip-utils.standalone
-	cat pip-utils.zip >> pip-utils.standalone
-	echo '#!/usr/bin/env python2' > pip2-utils.standalone
-	cat pip-utils.zip >> pip2-utils.standalone
-	echo '#!/usr/bin/env python3' > pip3-utils.standalone
-	cat pip-utils.zip >> pip3-utils.standalone
-	rm pip-utils.zip
-	chmod a+x pip-utils.standalone pip2-utils.standalone pip3-utils.standalone
+	rm -rf -- $(ZIPBUILD_BUILD_DIR)
+	mkdir -- $(ZIPBUILD_BUILD_DIR)
+	pip --isolated download --dest $(ZIPBUILD_BUILD_DIR)/download --only-binary :all: pip==8.1.2
+	unzip $(ZIPBUILD_BUILD_DIR)/download/pip-8.1.2-py2.py3-none-any.whl -d $(ZIPBUILD_ZIP_DIR) 'pip/*'
+	mkdir -- $(ZIPBUILD_ZIP_DIR)/pip_utils
+	cp pip_utils/*.py $(ZIPBUILD_ZIP_DIR)/pip_utils
+	mv $(ZIPBUILD_ZIP_DIR)/pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
+	cd $(ZIPBUILD_ZIP_DIR) && zip -9r ../pip-utils .
+	mkdir -- $(ZIPBUILD_OUTPUT_DIR)
+	echo '#!/usr/bin/env python' > $(ZIPBUILD_OUTPUT_DIR)/pip-utils.standalone
+	cat $(ZIPBUILD_ZIP_FILE) >> $(ZIPBUILD_OUTPUT_DIR)/pip-utils.standalone
+	echo '#!/usr/bin/env python2' > $(ZIPBUILD_OUTPUT_DIR)/pip2-utils.standalone
+	cat $(ZIPBUILD_ZIP_FILE) >> $(ZIPBUILD_OUTPUT_DIR)/pip2-utils.standalone
+	echo '#!/usr/bin/env python3' > $(ZIPBUILD_OUTPUT_DIR)/pip3-utils.standalone
+	cat $(ZIPBUILD_ZIP_FILE) >> $(ZIPBUILD_OUTPUT_DIR)/pip3-utils.standalone
+	cd $(ZIPBUILD_OUTPUT_DIR) && chmod -v +x -- pip-utils.standalone pip2-utils.standalone pip3-utils.standalone

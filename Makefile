@@ -46,9 +46,7 @@ pex: pip_utils/*.py setup.py
 .PHONY: standalone
 standalone: pip_utils/*.py
 	rm -rf -- $(ZIPBUILD_BUILD_DIR)
-	mkdir -- $(ZIPBUILD_BUILD_DIR)
-	pip --isolated download --dest $(ZIPBUILD_BUILD_DIR)/download --only-binary :all: pip==8.1.2
-	unzip $(ZIPBUILD_BUILD_DIR)/download/pip-8.1.2-py2.py3-none-any.whl -d $(ZIPBUILD_ZIP_DIR) 'pip/*'
+	pip --isolated install --no-compile --no-deps --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) pip==8.1.2
 	mkdir -- $(ZIPBUILD_ZIP_DIR)/pip_utils
 	cp pip_utils/*.py $(ZIPBUILD_ZIP_DIR)/pip_utils
 	mv $(ZIPBUILD_ZIP_DIR)/pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)

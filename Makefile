@@ -14,7 +14,7 @@ PEXBUILD_PEX_REPO_DIR := $(PEXBUILD_BUILD_DIR)/pex
 
 .PHONY: clean
 clean:
-	rm -rf build/ pip_utils.egg-info/
+	rm -rf build/ build.pex/ pip_utils.egg-info/
 	find . -type f -name '*.pyc' -delete
 	find . -type d -name __pycache__ -delete
 

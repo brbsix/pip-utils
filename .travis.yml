@@ -14,7 +14,7 @@ install:
 script:
 - python setup.py test
 - python setup.py bdist_wheel sdist
-- make PEXBUILD_PYTHON=python PEXBUILD_VENVTOOL=virtualenv pex
+- make PEXBUILD_PYTHON=python PEXBUILD_VENV_TOOL=virtualenv pex
 
 deploy:
   provider: releases

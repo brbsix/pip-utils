@@ -1,6 +1,9 @@
 MAKEFLAGS += --warn-undefined-variables
 .DEFAULT_GOAL := package
 
+DISTBUILD_BUILD_DIRS := ./*.egg-info/ .eggs/ build/
+DISTBUILD_OUTPUT_DIR := dist
+
 PEXBUILD_BUILD_DIR := build.pex
 PEXBUILD_OUTPUT_DIR := out.pex
 PEXBUILD_OUTPUT_FILE := $(PEXBUILD_OUTPUT_DIR)/pip-utils.pex
@@ -19,9 +22,14 @@ ZIPBUILD_ZIP_FILE := $(ZIPBUILD_BUILD_DIR)/pip-utils.zip
 
 .PHONY: clean
 clean:
-	rm -rf .eggs/ build/ pip_utils.egg-info/ $(PEXBUILD_BUILD_DIR) $(ZIPBUILD_BUILD_DIR)
+	rm -rf -- $(DISTBUILD_BUILD_DIRS) $(PEXBUILD_BUILD_DIR) $(ZIPBUILD_BUILD_DIR)
 	find . -type f -name '*.pyc' -delete
 	find . -type d -name __pycache__ -delete
+
+.PHONY: distclean
+distclean:
+	rm -- ./*.pex ./*.standalone
+	rm -rf -- $(DISTBUILD_OUTPUT_DIR) $(PEXBUILD_OUTPUT_DIR) $(ZIPBUILD_OUTPUT_DIR)
 
 .PHONY: package
 package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py

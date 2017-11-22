@@ -19,7 +19,7 @@ ZIPBUILD_ZIP_FILE := $(ZIPBUILD_BUILD_DIR)/pip-utils.zip
 
 .PHONY: clean
 clean:
-	rm -rf build/ pip_utils.egg-info/ $(PEXBUILD_BUILD_DIR) $(ZIPBUILD_BUILD_DIR)
+	rm -rf .eggs/ build/ pip_utils.egg-info/ $(PEXBUILD_BUILD_DIR) $(ZIPBUILD_BUILD_DIR)
 	find . -type f -name '*.pyc' -delete
 	find . -type d -name __pycache__ -delete
 

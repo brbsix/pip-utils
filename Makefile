@@ -17,6 +17,7 @@ PEXBUILD_VENV_TOOL := venv
 
 ZIPBUILD_BUILD_DIR := build.zip
 ZIPBUILD_OUTPUT_DIR := dist.zip
+ZIPBUILD_PYTHON := python3
 ZIPBUILD_ZIP_DIR := $(ZIPBUILD_BUILD_DIR)/zip
 ZIPBUILD_ZIP_FILE := $(ZIPBUILD_BUILD_DIR)/pip-utils.zip
 
@@ -54,7 +55,7 @@ pex: pip_utils/*.py setup.py
 .PHONY: standalone
 standalone: pip_utils/*.py
 	rm -rf -- $(ZIPBUILD_BUILD_DIR)
-	pip install --no-compile --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) .
+	$(ZIPBUILD_PYTHON) -m pip install --no-compile --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) .
 	cp pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
 	cd $(ZIPBUILD_ZIP_DIR) && zip -9r ../pip-utils .
 	mkdir -- $(ZIPBUILD_OUTPUT_DIR)

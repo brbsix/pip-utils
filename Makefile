@@ -6,7 +6,6 @@ DISTBUILD_OUTPUT_DIR := dist
 
 PEXBUILD_BUILD_DIR := build.pex
 PEXBUILD_OUTPUT_DIR := dist.pex
-PEXBUILD_OUTPUT_FILE := $(PEXBUILD_OUTPUT_DIR)/pip-utils.pex
 PEXBUILD_PEX_REPO_DIR := $(PEXBUILD_BUILD_DIR)/pex
 PEXBUILD_PEX_REPO_URL := https://github.com/pantsbuild/pex.git
 PEXBUILD_PYTHON := python3
@@ -39,6 +38,7 @@ package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py
 
 .PHONY: pex
 pex: pip_utils/*.py setup.py
+	$(eval PEXBUILD_VERSION := $(shell $(PEXBUILD_PYTHON) setup.py --version))
 	rm -rf -- $(PEXBUILD_BUILD_DIR)
 	$(PEXBUILD_PYTHON) -m $(PEXBUILD_VENV_TOOL) $(PEXBUILD_VENV_DIR)
 	git clone --depth=1 $(PEXBUILD_PEX_REPO_URL) $(PEXBUILD_PEX_REPO_DIR)
@@ -48,12 +48,13 @@ pex: pip_utils/*.py setup.py
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c bdist_wheel -o universal -s 1
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c egg_info -o egg-base -s $(PEXBUILD_BUILD_DIR)/egg
 	mkdir -- $(PEXBUILD_BUILD_DIR)/egg
-	$(PEXBUILD_VENV_PYTHON) -m pex.bin.pex $(PEXBUILD_SPECIFICATION) --disable-cache --entry-point=pip_utils --inherit-path --output-file=$(PEXBUILD_OUTPUT_FILE) --python-shebang='/usr/bin/env python'
+	$(PEXBUILD_VENV_PYTHON) -m pex.bin.pex $(PEXBUILD_SPECIFICATION) --disable-cache --entry-point=pip_utils --inherit-path --output-file=$(PEXBUILD_OUTPUT_DIR)/pip-utils-$(PEXBUILD_VERSION) --python-shebang='/usr/bin/env python'
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c bdist_wheel -o universal -r
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c egg_info -o egg-base -r
 
 .PHONY: standalone
 standalone: pip_utils/*.py
+	$(eval ZIPBUILD_VERSION := $(shell $(ZIPBUILD_PYTHON) setup.py --version))
 	rm -rf -- $(ZIPBUILD_BUILD_DIR)
 	$(ZIPBUILD_PYTHON) -m pip install --no-compile --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) .
 	cp pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
@@ -61,7 +62,7 @@ standalone: pip_utils/*.py
 	mkdir -- $(ZIPBUILD_OUTPUT_DIR)
 	cd $(ZIPBUILD_OUTPUT_DIR) && \
 	  for v in '' 2 3; do \
-	    echo '#!/usr/bin/env python'"$$v" > "pip$$v-utils.standalone" && \
-	    cat ../$(ZIPBUILD_ZIP_FILE) >> "pip$$v-utils.standalone" && \
-	    chmod -v +x "pip$$v-utils.standalone"; \
+	    echo '#!/usr/bin/env python'"$$v" > "pip$$v-utils-$(ZIPBUILD_VERSION)" && \
+	    cat ../$(ZIPBUILD_ZIP_FILE) >> "pip$$v-utils-$(ZIPBUILD_VERSION)" && \
+	    chmod -v +x "pip$$v-utils-$(ZIPBUILD_VERSION)"; \
 	  done

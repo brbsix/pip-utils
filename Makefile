@@ -1,6 +1,8 @@
 MAKEFLAGS += --warn-undefined-variables
 .DEFAULT_GOAL := package
 
+BUILD_DATE := $(shell date +%Y%m%d%H%M)
+
 DISTBUILD_BUILD_DIRS := ./*.egg-info/ .eggs/ build/
 DISTBUILD_OUTPUT_DIR := dist
 
@@ -48,7 +50,7 @@ pex: pip_utils/*.py setup.py
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c bdist_wheel -o universal -s 1
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c egg_info -o egg-base -s $(PEXBUILD_BUILD_DIR)/egg
 	mkdir -- $(PEXBUILD_BUILD_DIR)/egg
-	$(PEXBUILD_VENV_PYTHON) -m pex.bin.pex $(PEXBUILD_SPECIFICATION) --disable-cache --entry-point=pip_utils --inherit-path --output-file=$(PEXBUILD_OUTPUT_DIR)/pip-utils-$(PEXBUILD_VERSION) --python-shebang='/usr/bin/env python'
+	$(PEXBUILD_VENV_PYTHON) -m pex.bin.pex $(PEXBUILD_SPECIFICATION) --disable-cache --entry-point=pip_utils --inherit-path --output-file=$(PEXBUILD_OUTPUT_DIR)/pip-utils-$(PEXBUILD_VERSION)_$(BUILD_DATE) --python-shebang='/usr/bin/env python'
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c bdist_wheel -o universal -r
 	$(PEXBUILD_VENV_PYTHON) setup.py setopt -c egg_info -o egg-base -r
 
@@ -62,7 +64,7 @@ standalone: pip_utils/*.py
 	mkdir -- $(ZIPBUILD_OUTPUT_DIR)
 	cd $(ZIPBUILD_OUTPUT_DIR) && \
 	  for v in '' 2 3; do \
-	    echo '#!/usr/bin/env python'"$$v" > "pip$$v-utils-$(ZIPBUILD_VERSION)" && \
-	    cat ../$(ZIPBUILD_ZIP_FILE) >> "pip$$v-utils-$(ZIPBUILD_VERSION)" && \
-	    chmod -v +x "pip$$v-utils-$(ZIPBUILD_VERSION)"; \
+	    echo '#!/usr/bin/env python'"$$v" > "pip$$v-utils-$(ZIPBUILD_VERSION)_$(BUILD_DATE)" && \
+	    cat ../$(ZIPBUILD_ZIP_FILE) >> "pip$$v-utils-$(ZIPBUILD_VERSION)_$(BUILD_DATE)" && \
+	    chmod -v +x "pip$$v-utils-$(ZIPBUILD_VERSION)_$(BUILD_DATE)"; \
 	  done

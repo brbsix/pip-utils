@@ -224,6 +224,9 @@ class ListCommand(object):
     @classmethod
     def run_outdated(cls, options):
         """Print outdated user packages."""
+        if options.globals:
+            cls.options['user'] = False
+
         latest_versions = sorted(
             cls.find_packages_latest_versions(cls.options),
             key=lambda p: p[0].project_name.lower())

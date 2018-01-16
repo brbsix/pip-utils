@@ -125,9 +125,15 @@ def _parser():
         help='update packages that can be updated'
     )
     parser_outdated.add_argument(
+        '--globals',
+        action='store_true',
+        help='output packages installed in globals.'
+    )
+    parser_outdated.add_argument(
         '-h', '--help',
         action='help',
         help=argparse.SUPPRESS)
+
     parser_outdated.set_defaults(
         func=command_outdated)
 

@@ -35,3 +35,4 @@ def is_dependant(package, project_name):
         # perform case-insensitive matching
         if requirement.project_name.lower() == project_name.lower():
             return True
+    return False

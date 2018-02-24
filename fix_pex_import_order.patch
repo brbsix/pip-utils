@@ -23,7 +23,7 @@ index b8e9201..3df1f0f 100644
          dist.activate()
  
 +    if self._pex_info.inherit_path:
-+        # prioritize import of distributions contained within this pex2s
++        # prioritize import of distributions contained within this pex
 +        sys_path_additions = list(OrderedSet(sys.path) - OrderedSet(sys_path_backup))
 +        sys.path = sys_path_additions + sys_path_backup
 +

@@ -43,7 +43,8 @@ pex: pip_utils/*.py setup.py
 	$(eval PEXBUILD_VERSION := $(shell $(PEXBUILD_PYTHON) setup.py --version))
 	rm -rf -- $(PEXBUILD_BUILD_DIR)
 	$(PEXBUILD_PYTHON) -m $(PEXBUILD_VENV_TOOL) $(PEXBUILD_VENV_DIR)
-	git clone --depth=1 $(PEXBUILD_PEX_REPO_URL) $(PEXBUILD_PEX_REPO_DIR)
+	git clone $(PEXBUILD_PEX_REPO_URL) $(PEXBUILD_PEX_REPO_DIR)
+	git -C $(PEXBUILD_PEX_REPO_DIR) checkout v1.2.16
 	git apply --directory $(PEXBUILD_PEX_REPO_DIR) --verbose fix_pex_import_order.patch
 	$(PEXBUILD_VENV_PYTHON) -m pip install -U pip
 	$(PEXBUILD_VENV_PYTHON) -m pip install -U $(PEXBUILD_PEX_REPO_DIR)[cachecontrol,requests]

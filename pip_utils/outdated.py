@@ -9,14 +9,23 @@ import os
 from site import ENABLE_USER_SITE
 
 # external imports
-import pip
+try:
+    from pip._internal.download import PipSession
+    from pip._internal.index import PackageFinder
+    from pip._internal.utils.misc import (
+        dist_is_editable, get_installed_distributions, normalize_path
+    )
+    from pip._internal import main
+except ImportError:
+    # legacy support for pip 8 & 9
+    from pip.download import PipSession
+    from pip.index import PackageFinder
+    from pip.utils import (
+        dist_is_editable, get_installed_distributions, normalize_path
+    )
+    from pip import main
 from pip._vendor.distlib.util import parse_requirement
 from pip._vendor.distlib.version import UnsupportedVersionError, get_scheme
-from pip.download import PipSession
-from pip.index import PackageFinder
-from pip.utils import (
-    dist_is_editable, get_installed_distributions, normalize_path
-)
 
 
 class ListCommand(object):
@@ -239,7 +248,7 @@ class ListCommand(object):
                         print(dist.project_name if options.brief else
                               'Updating %s to Latest: %s [%s]' %
                               (cls.output_package(dist), latest_version, typ))
-                        pip.main(['install', '--upgrade'] + ([
+                        main(['install', '--upgrade'] + ([
                             '--user'
                         ] if ENABLE_USER_SITE else []) + [dist.key])
                         continue

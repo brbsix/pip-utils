@@ -9,8 +9,13 @@ import os
 from site import ENABLE_USER_SITE
 
 # external imports
-from pip.commands.show import search_packages_info
-from pip import get_installed_distributions
+try:
+    from pip._internal.commands.show import search_packages_info
+    from pip._internal import get_installed_distributions
+except ImportError:
+    # legacy support for pip 8 & 9
+    from pip.commands.show import search_packages_info
+    from pip import get_installed_distributions
 
 
 def command_locate(options):

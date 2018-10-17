@@ -34,7 +34,7 @@ class ListCommand(object):
 
     Sourced from: pip.commands.list.ListCommand
     """
-    installed_distributions = None
+    installed_distributions = []
 
     options = {
         'help': None,

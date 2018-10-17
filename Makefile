@@ -57,7 +57,7 @@ standalone: pip_utils/*.py
 	$(ZIPBUILD_PYTHON) -m pip install --no-compile --only-binary :all: --target $(ZIPBUILD_ZIP_DIR) .
 	cp pip_utils/__main__.py $(ZIPBUILD_ZIP_DIR)
 	cd $(ZIPBUILD_ZIP_DIR) && zip -9r ../pip-utils .
-	mkdir -- $(ZIPBUILD_OUTPUT_DIR)
+	mkdir -p -- $(ZIPBUILD_OUTPUT_DIR)
 	cd $(ZIPBUILD_OUTPUT_DIR) && \
 	  for v in '' 2 3; do \
 	    echo '#!/usr/bin/env python'"$$v" > "pip$$v-utils-$(ZIPBUILD_VERSION)_$(BUILD_DATE)" && \

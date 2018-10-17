@@ -10,7 +10,7 @@ jobs=2
 # can either give multiple identifier separated by comma (,) or put this option
 # multiple time (only on the command line, not in the configuration file where
 # it should appear only once).
-disable=E1102
+disable=E1102,R0205
 
 
 [REPORTS]

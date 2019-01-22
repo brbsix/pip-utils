@@ -41,7 +41,6 @@ class ListCommand(object):
         'local': True,
         'no_index': False,
         'allow_all_insecure': False,
-        'process_dependency_links': False,
         'proxy': '',
         'require_venv': False,
         'timeout': 15,
@@ -83,7 +82,6 @@ class ListCommand(object):
             index_urls=index_urls,
             allow_all_prereleases=options.get('pre'),
             trusted_hosts=options.get('trusted_hosts'),
-            process_dependency_links=options.get('process_dependency_links'),
             session=session,
         )
 
@@ -150,19 +148,8 @@ class ListCommand(object):
         index_urls = [] if options.get('no_index') else \
             [options.get('index_url')] + options.get('extra_index_urls')
 
-        dependency_links = []
-        for dist in get_installed_distributions(
-                local_only=options.get('local'),
-                user_only=options.get('user'),
-                editables_only=options.get('editable')):
-            if dist.has_metadata('dependency_links.txt'):
-                dependency_links.extend(
-                    dist.get_metadata_lines('dependency_links.txt'),
-                )
-
         with cls._build_session(options) as session:
             finder = cls._build_package_finder(options, index_urls, session)
-            finder.add_dependency_links(dependency_links)
 
             cls.installed_distributions = get_installed_distributions(
                 local_only=options.get('local'),

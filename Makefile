@@ -1,5 +1,5 @@
 MAKEFLAGS += --warn-undefined-variables
-.DEFAULT_GOAL := package
+.DEFAULT_GOAL := all
 
 BUILD_DATE := $(shell date +%Y%m%d%H%M)
 
@@ -30,6 +30,9 @@ clean:
 distclean:
 	rm -- ./*.pex ./*.standalone
 	rm -rf -- $(DISTBUILD_OUTPUT_DIR) $(PEXBUILD_OUTPUT_DIR) $(ZIPBUILD_OUTPUT_DIR)
+
+.PHONY: all
+all: package pex standalone
 
 .PHONY: package
 package: LICENSE README.rst setup.cfg setup.py pip_utils/*.py

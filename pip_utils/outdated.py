@@ -59,7 +59,7 @@ class ListCommand(object):
         'version': None,
         'log': None,
         'index_url': 'https://pypi.python.org/simple',
-        'cache_dir': os.path.join(os.environ['HOME'], '.cache/pip'),
+        'cache_dir': None,
         'outdated': True,
         'retries': 5,
         'allow_all_external': False,
@@ -71,6 +71,9 @@ class ListCommand(object):
         'user': ENABLE_USER_SITE,
         'verbose': 0
     }
+
+    if 'HOME' in os.environ:
+        options['cache_dir'] = os.path.join(os.environ['HOME'], '.cache/pip')
 
     @staticmethod
     def _build_package_finder(options, index_urls, session):
@@ -217,6 +220,9 @@ class ListCommand(object):
     @classmethod
     def run_outdated(cls, options):
         """Print outdated user packages."""
+        if options.globals:
+            cls.options['user'] = False
+
         latest_versions = sorted(
             cls.find_packages_latest_versions(cls.options),
             key=lambda p: p[0].project_name.lower())
